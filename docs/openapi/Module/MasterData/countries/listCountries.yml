@@ -1,0 +1,11 @@
+/api/v1/master/countries:
+  get:
+    operationId: listCountries
+    summary: List countries
+    tags:
+      - Master Data
+    responses:
+      '200':
+        description: OK
+
+

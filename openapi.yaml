@@ -1,0 +1,1083 @@
+openapi: 3.0.0
+info:
+  title: Logistic Backend API
+  description: A comprehensive logistic management system API built with NestJS
+  version: 1.0.0
+  contact:
+    name: Logistic Team
+    url: https://logistic-backend.com
+    email: support@logistic-backend.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://api.logistic-backend.com
+    description: Production server
+tags:
+  - name: Authentication
+    description: User authentication and authorization endpoints
+  - name: Users
+    description: User management endpoints
+  - name: Health
+    description: Health check endpoints
+  - name: Master Data
+    description: Master data endpoints (countries, cities, ports/airports, carriers, commodities, parties)
+paths:
+  /api/v1/master/countries:
+    post:
+      tags:
+        - Master Data
+      summary: Create country
+      operationId: createCountry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                country_name:
+                  type: string
+                country_code:
+                  type: string
+                capital:
+                  type: string
+                currency:
+                  type: string
+                language:
+                  type: string
+      responses:
+        '201':
+          description: Created
+    get:
+      tags:
+        - Master Data
+      summary: List countries
+      operationId: listCountries
+      responses:
+        '200':
+          description: OK
+  /api/v1/master/countries/{id}:
+    get:
+      tags:
+        - Master Data
+      summary: Get country by id
+      operationId: getCountryById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/master/cities:
+    post:
+      tags:
+        - Master Data
+      summary: Create city
+      operationId: createCity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city_name: { type: string }
+                city_code: { type: string }
+                country_id: { type: integer }
+    get:
+      tags:
+        - Master Data
+      summary: List cities
+      operationId: listCities
+      responses:
+        '200':
+          description: OK
+  /api/v1/master/cities/{id}:
+    get:
+      tags:
+        - Master Data
+      summary: Get city by id
+      operationId: getCityById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/master/ports-airports:
+    post:
+      tags:
+        - Master Data
+      summary: Create port/airport
+      operationId: createPortAirport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                port_name: { type: string }
+                port_code: { type: string }
+                type: { type: string, enum: [port, airport] }
+                city_id: { type: integer }
+    get:
+      tags:
+        - Master Data
+      summary: List ports/airports
+      operationId: listPortsAirports
+      responses:
+        '200':
+          description: OK
+  /api/v1/master/ports-airports/{id}:
+    get:
+      tags:
+        - Master Data
+      summary: Get port/airport by id
+      operationId: getPortAirportById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/master/carriers:
+    post:
+      tags:
+        - Master Data
+      summary: Create carrier
+      operationId: createCarrier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                carrier_name: { type: string }
+                carrier_code: { type: string }
+                type: { type: string, enum: [airline, shipping] }
+    get:
+      tags:
+        - Master Data
+      summary: List carriers
+      operationId: listCarriers
+      responses:
+        '200':
+          description: OK
+  /api/v1/master/carriers/{id}:
+    get:
+      tags:
+        - Master Data
+      summary: Get carrier by id
+      operationId: getCarrierById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/master/commodities:
+    post:
+      tags:
+        - Master Data
+      summary: Create commodity
+      operationId: createCommodity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                commodity_name: { type: string }
+                commodity_code: { type: string }
+                category: { type: string }
+    get:
+      tags:
+        - Master Data
+      summary: List commodities
+      operationId: listCommodities
+      responses:
+        '200':
+          description: OK
+  /api/v1/master/commodities/{id}:
+    get:
+      tags:
+        - Master Data
+      summary: Get commodity by id
+      operationId: getCommodityById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/master/parties:
+    post:
+      tags:
+        - Master Data
+      summary: Create party
+      operationId: createParty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                short_name: { type: string }
+                type: { type: string, enum: [consignee, shipper, carrier, vendor] }
+                billing_address: { type: string }
+                corporate_address: { type: string }
+                credit_limit: { type: number }
+                credit_days: { type: integer }
+                tds_rate: { type: number }
+                tds_applicable: { type: boolean }
+                contact_person: { type: string }
+                phone: { type: string }
+                email: { type: string }
+    get:
+      tags:
+        - Master Data
+      summary: List parties
+      operationId: listParties
+      responses:
+        '200':
+          description: OK
+  /api/v1/master/parties/{id}:
+    get:
+      tags:
+        - Master Data
+      summary: Get party by id
+      operationId: getPartyById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate user with email and password
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Login successful
+                data:
+                  user:
+                    id: uuid
+                    email: user@example.com
+                    firstName: John
+                    lastName: Doe
+                    role: user
+                    status: active
+                  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: false
+                message: Invalid credentials
+                errors:
+                  - Invalid email or password
+  /api/v1/auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: User registration
+      description: Register a new user account
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDto'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: User registered successfully
+                data:
+                  user:
+                    id: uuid
+                    email: user@example.com
+                    firstName: John
+                    lastName: Doe
+                    role: user
+                    status: active
+                  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Validation error or user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: false
+                message: Validation failed
+                errors:
+                  - Email already exists
+  /api/v1/auth/profile:
+    get:
+      tags:
+        - Authentication
+      summary: Get user profile
+      description: Get current authenticated user profile
+      operationId: getProfile
+      security:
+        - JWT-auth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Profile retrieved successfully
+                data:
+                  id: uuid
+                  email: user@example.com
+                  firstName: John
+                  lastName: Doe
+                  role: user
+                  status: active
+                  phone: +1234567890
+                  createdAt: '2023-01-01T00:00:00.000Z'
+                  updatedAt: '2023-01-01T00:00:00.000Z'
+        '401':
+          description: Unauthorized - Invalid or missing token
+  /api/v1/auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Generate a new access token using the current valid token
+      operationId: refreshToken
+      security:
+        - JWT-auth: []
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Token refreshed successfully
+                data:
+                  accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
+          description: Unauthorized - Invalid or expired token
+  /api/v1/users:
+    post:
+      tags:
+        - Users
+      summary: Create a new user
+      description: Create a new user account (Admin only)
+      operationId: createUser
+      security:
+        - JWT-auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: User created successfully
+                data:
+                  id: uuid
+                  email: user@example.com
+                  firstName: John
+                  lastName: Doe
+                  role: user
+                  status: active
+                  createdAt: '2023-01-01T00:00:00.000Z'
+        '400':
+          description: Validation error or user already exists
+        '403':
+          description: Forbidden - Admin role required
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Retrieve a paginated list of all users (Admin/Manager only)
+      operationId: findAllUsers
+      security:
+        - JWT-auth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+            example: 10
+        - name: search
+          in: query
+          description: Search term to filter results
+          required: false
+          schema:
+            type: string
+            example: john
+        - name: sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+            example: createdAt
+        - name: sortOrder
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+            default: DESC
+            example: DESC
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Users retrieved successfully
+                data:
+                  - id: uuid
+                    email: user@example.com
+                    firstName: John
+                    lastName: Doe
+                    role: user
+                    status: active
+                meta:
+                  page: 1
+                  limit: 10
+                  total: 1
+                  totalPages: 1
+        '403':
+          description: Forbidden - Admin or Manager role required
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Retrieve a specific user by their ID (Admin/Manager only)
+      operationId: findOneUser
+      security:
+        - JWT-auth: []
+      parameters:
+        - name: id
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: User retrieved successfully
+                data:
+                  id: uuid
+                  email: user@example.com
+                  firstName: John
+                  lastName: Doe
+                  role: user
+                  status: active
+                  phone: +1234567890
+                  createdAt: '2023-01-01T00:00:00.000Z'
+                  updatedAt: '2023-01-01T00:00:00.000Z'
+        '404':
+          description: User not found
+        '403':
+          description: Forbidden - Admin or Manager role required
+    patch:
+      tags:
+        - Users
+      summary: Update user
+      description: Update user information (Admin only)
+      operationId: updateUser
+      security:
+        - JWT-auth: []
+      parameters:
+        - name: id
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: User updated successfully
+                data:
+                  id: uuid
+                  email: user@example.com
+                  firstName: John
+                  lastName: Doe
+                  role: user
+                  status: active
+                  updatedAt: '2023-01-01T00:00:00.000Z'
+        '404':
+          description: User not found
+        '403':
+          description: Forbidden - Admin role required
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      description: Delete a user account (Admin only)
+      operationId: removeUser
+      security:
+        - JWT-auth: []
+      parameters:
+        - name: id
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: User deleted successfully
+        '404':
+          description: User not found
+        '403':
+          description: Forbidden - Admin role required
+  /api/v1/users/{id}/change-password:
+    patch:
+      tags:
+        - Users
+      summary: Change user password
+      description: Change password for a specific user (Admin only)
+      operationId: changeUserPassword
+      security:
+        - JWT-auth: []
+      parameters:
+        - name: id
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDto'
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Password changed successfully
+        '400':
+          description: Invalid current password
+        '404':
+          description: User not found
+        '403':
+          description: Forbidden - Admin role required
+  /api/v1/users/profile/me:
+    get:
+      tags:
+        - Users
+      summary: Get my profile
+      description: Get current authenticated user profile
+      operationId: getMyProfile
+      security:
+        - JWT-auth: []
+      responses:
+        '200':
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Profile retrieved successfully
+                data:
+                  id: uuid
+                  email: user@example.com
+                  firstName: John
+                  lastName: Doe
+                  role: user
+                  status: active
+                  phone: +1234567890
+                  createdAt: '2023-01-01T00:00:00.000Z'
+                  updatedAt: '2023-01-01T00:00:00.000Z'
+        '401':
+          description: Unauthorized - Invalid or missing token
+    patch:
+      tags:
+        - Users
+      summary: Update my profile
+      description: Update current authenticated user profile (role and status cannot be changed)
+      operationId: updateMyProfile
+      security:
+        - JWT-auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Profile updated successfully
+                data:
+                  id: uuid
+                  email: user@example.com
+                  firstName: John
+                  lastName: Doe
+                  role: user
+                  status: active
+                  updatedAt: '2023-01-01T00:00:00.000Z'
+        '400':
+          description: Validation error
+        '401':
+          description: Unauthorized - Invalid or missing token
+  /api/v1/users/profile/change-password:
+    patch:
+      tags:
+        - Users
+      summary: Change my password
+      description: Change password for current authenticated user
+      operationId: changeMyPassword
+      security:
+        - JWT-auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDto'
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Password changed successfully
+        '400':
+          description: Invalid current password
+        '401':
+          description: Unauthorized - Invalid or missing token
+  /api/v1/health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check the health status of the API server
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Health check successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseDto'
+              example:
+                success: true
+                message: Success
+                data:
+                  status: ok
+                  timestamp: '2023-01-01T00:00:00.000Z'
+                  uptime: 12345.67
+                  environment: development
+                  version: 1.0.0
+components:
+  securitySchemes:
+    JWT-auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter JWT token
+  schemas:
+    ApiResponseDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request was successful
+          example: true
+        message:
+          type: string
+          description: Response message
+          example: Operation completed successfully
+        data:
+          description: Response data payload
+        meta:
+          type: object
+          description: Pagination metadata
+          properties:
+            page:
+              type: number
+              example: 1
+            limit:
+              type: number
+              example: 10
+            total:
+              type: number
+              example: 100
+            totalPages:
+              type: number
+              example: 10
+        errors:
+          type: array
+          items:
+            type: string
+          description: Array of error messages
+          example:
+            - Validation failed
+            - Invalid input
+    LoginDto:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: user@example.com
+        password:
+          type: string
+          minLength: 6
+          description: User password
+          example: password123
+    RegisterDto:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: user@example.com
+        password:
+          type: string
+          minLength: 6
+          description: User password
+          example: password123
+        firstName:
+          type: string
+          description: User first name
+          example: John
+        lastName:
+          type: string
+          description: User last name
+          example: Doe
+        phone:
+          type: string
+          description: User phone number
+          example: +1234567890
+    CreateUserDto:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: user@example.com
+        password:
+          type: string
+          minLength: 6
+          description: User password
+          example: password123
+        firstName:
+          type: string
+          maxLength: 50
+          description: User first name
+          example: John
+        lastName:
+          type: string
+          maxLength: 50
+          description: User last name
+          example: Doe
+        phone:
+          type: string
+          description: User phone number
+          example: +1234567890
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+            - driver
+            - manager
+          description: User role
+          example: user
+        address:
+          type: string
+          description: User address
+          example: 123 Main St
+        city:
+          type: string
+          description: User city
+          example: New York
+        country:
+          type: string
+          description: User country
+          example: United States
+        postalCode:
+          type: string
+          description: User postal code
+          example: 10001
+        dateOfBirth:
+          type: string
+          format: date
+          description: User date of birth
+          example: '1990-01-01'
+    UpdateUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: user@example.com
+        firstName:
+          type: string
+          maxLength: 50
+          description: User first name
+          example: John
+        lastName:
+          type: string
+          maxLength: 50
+          description: User last name
+          example: Doe
+        phone:
+          type: string
+          description: User phone number
+          example: +1234567890
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+            - driver
+            - manager
+          description: User role
+          example: user
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+            - suspended
+          description: User status
+          example: active
+        avatar:
+          type: string
+          description: User avatar URL
+          example: https://example.com/avatar.jpg
+        address:
+          type: string
+          description: User address
+          example: 123 Main St
+        city:
+          type: string
+          description: User city
+          example: New York
+        country:
+          type: string
+          description: User country
+          example: United States
+        postalCode:
+          type: string
+          description: User postal code
+          example: 10001
+        dateOfBirth:
+          type: string
+          format: date
+          description: User date of birth
+          example: '1990-01-01'
+    ChangePasswordDto:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+      properties:
+        currentPassword:
+          type: string
+          minLength: 6
+          description: Current user password
+          example: currentPassword123
+        newPassword:
+          type: string
+          minLength: 6
+          description: New user password
+          example: newPassword123
+    PaginationDto:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          default: 1
+          description: Page number for pagination
+          example: 1
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+          description: Number of items per page
+          example: 10
+        search:
+          type: string
+          description: Search term to filter results
+          example: john
+        sortBy:
+          type: string
+          description: Field to sort by
+          example: createdAt
+        sortOrder:
+          type: string
+          enum:
+            - ASC
+            - DESC
+          default: DESC
+          description: Sort order
+          example: DESC
+

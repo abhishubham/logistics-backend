@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: logistic-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: logistic_db
+      MYSQL_USER: logistic_user
+      MYSQL_PASSWORD: logistic_password
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - logistic-network
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+
+  # Redis (for caching and sessions)
+  redis:
+    image: redis:7-alpine
+    container_name: logistic-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - logistic-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      timeout: 3s
+      retries: 5
+
+  # Application
+  app:
+    build: .
+    container_name: logistic-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: logistic_user
+      DB_PASSWORD: logistic_password
+      DB_DATABASE: logistic_db
+      DB_SYNCHRONIZE: false
+      DB_LOGGING: false
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      JWT_EXPIRES_IN: 24h
+      JWT_REFRESH_SECRET: your-super-secret-refresh-key-change-this-in-production
+      JWT_REFRESH_EXPIRES_IN: 7d
+      CORS_ORIGIN: http://localhost:3000
+      RATE_LIMIT_TTL: 60
+      RATE_LIMIT_LIMIT: 100
+    ports:
+      - '3000:3000'
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - logistic-network
+    volumes:
+      - ./uploads:/app/uploads
+
+  # Nginx (Reverse Proxy)
+  nginx:
+    image: nginx:alpine
+    container_name: logistic-nginx
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - logistic-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  logistic-network:
+    driver: bridge

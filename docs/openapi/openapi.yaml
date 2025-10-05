@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: Logistic Backend API
+  description: A comprehensive logistic management system API built with NestJS
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://api.logistic-backend.com
+    description: Production server
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Health
+  - name: Master Data
+  - name: Countries
+  - name: Cities
+  - name: Ports/Airports
+  - name: Carriers
+  - name: Commodities
+  - name: Parties
+paths: {}
+components: {}
+
+

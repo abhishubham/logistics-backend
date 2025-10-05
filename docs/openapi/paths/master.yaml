@@ -1,0 +1,220 @@
+#/ Master Data paths
+/api/v1/master/countries:
+  post:
+    tags: [Master Data]
+    summary: Create country
+    operationId: createCountry
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              country_name: { type: string }
+              country_code: { type: string }
+              capital: { type: string }
+              currency: { type: string }
+              language: { type: string }
+    responses:
+      '201': { description: Created }
+  get:
+    tags: [Master Data]
+    summary: List countries
+    operationId: listCountries
+    responses:
+      '200': { description: OK }
+/api/v1/master/countries/{id}:
+  get:
+    tags: [Master Data]
+    summary: Get country by id
+    operationId: getCountryById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: OK }
+
+/api/v1/master/cities:
+  post:
+    tags: [Master Data]
+    summary: Create city
+    operationId: createCity
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              city_name: { type: string }
+              city_code: { type: string }
+              country_id: { type: integer }
+  get:
+    tags: [Master Data]
+    summary: List cities
+    operationId: listCities
+    responses:
+      '200': { description: OK }
+/api/v1/master/cities/{id}:
+  get:
+    tags: [Master Data]
+    summary: Get city by id
+    operationId: getCityById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: OK }
+
+/api/v1/master/ports-airports:
+  post:
+    tags: [Master Data]
+    summary: Create port/airport
+    operationId: createPortAirport
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              port_name: { type: string }
+              port_code: { type: string }
+              type: { type: string, enum: [port, airport] }
+              city_id: { type: integer }
+  get:
+    tags: [Master Data]
+    summary: List ports/airports
+    operationId: listPortsAirports
+    responses:
+      '200': { description: OK }
+/api/v1/master/ports-airports/{id}:
+  get:
+    tags: [Master Data]
+    summary: Get port/airport by id
+    operationId: getPortAirportById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: OK }
+
+/api/v1/master/carriers:
+  post:
+    tags: [Master Data]
+    summary: Create carrier
+    operationId: createCarrier
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              carrier_name: { type: string }
+              carrier_code: { type: string }
+              type: { type: string, enum: [airline, shipping] }
+  get:
+    tags: [Master Data]
+    summary: List carriers
+    operationId: listCarriers
+    responses:
+      '200': { description: OK }
+/api/v1/master/carriers/{id}:
+  get:
+    tags: [Master Data]
+    summary: Get carrier by id
+    operationId: getCarrierById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: OK }
+
+/api/v1/master/commodities:
+  post:
+    tags: [Master Data]
+    summary: Create commodity
+    operationId: createCommodity
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              commodity_name: { type: string }
+              commodity_code: { type: string }
+              category: { type: string }
+  get:
+    tags: [Master Data]
+    summary: List commodities
+    operationId: listCommodities
+    responses:
+      '200': { description: OK }
+/api/v1/master/commodities/{id}:
+  get:
+    tags: [Master Data]
+    summary: Get commodity by id
+    operationId: getCommodityById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: OK }
+
+/api/v1/master/parties:
+  post:
+    tags: [Master Data]
+    summary: Create party
+    operationId: createParty
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name: { type: string }
+              short_name: { type: string }
+              type: { type: string, enum: [consignee, shipper, carrier, vendor] }
+              billing_address: { type: string }
+              corporate_address: { type: string }
+              credit_limit: { type: number }
+              credit_days: { type: integer }
+              tds_rate: { type: number }
+              tds_applicable: { type: boolean }
+              contact_person: { type: string }
+              phone: { type: string }
+              email: { type: string }
+  get:
+    tags: [Master Data]
+    summary: List parties
+    operationId: listParties
+    responses:
+      '200': { description: OK }
+/api/v1/master/parties/{id}:
+  get:
+    tags: [Master Data]
+    summary: Get party by id
+    operationId: getPartyById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: OK }
+
+

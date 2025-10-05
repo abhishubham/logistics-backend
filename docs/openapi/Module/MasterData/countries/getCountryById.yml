@@ -1,0 +1,16 @@
+/api/v1/master/countries/{id}:
+  get:
+    operationId: getCountryById
+    summary: Get country by id
+    tags:
+      - Master Data
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer }
+    responses:
+      '200':
+        description: OK
+
+

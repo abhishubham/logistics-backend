@@ -1,0 +1,23 @@
+/api/v1/master/countries:
+  post:
+    operationId: createCountry
+    summary: Create country
+    tags:
+      - Master Data
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              country_name: { type: string }
+              country_code: { type: string }
+              capital: { type: string }
+              currency: { type: string }
+              language: { type: string }
+    responses:
+      '201':
+        description: Created
+
+
