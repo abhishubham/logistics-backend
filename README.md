@@ -1,23 +1,23 @@
 # Logistic Backend API
 
-A robust, production-ready NestJS backend application for logistic management with JWT authentication, MySQL database, and comprehensive user management.
+A robust, production-ready NestJS backend application for logistic management with JWT authentication, PostgreSQL database, and comprehensive user management.
 
 ## 🚀 Features
 
 - **Authentication & Authorization**: JWT-based authentication with role-based access control
 - **User Management**: Complete CRUD operations for users with different roles (Admin, Manager, Driver, User)
-- **Database**: MySQL with TypeORM for robust data management
+- **Database**: PostgreSQL with TypeORM for robust data management
 - **Validation**: Comprehensive input validation using class-validator
 - **Error Handling**: Global exception filters with standardized error responses
 - **Security**: Password hashing, CORS configuration, rate limiting
-- **Docker**: Complete Docker setup with MySQL, Redis, and Nginx
+- **Docker**: Complete Docker setup with PostgreSQL, Redis, and Nginx
 - **Code Quality**: ESLint, Prettier, and TypeScript configuration
 
 ## 🛠️ Tech Stack
 
 - **Framework**: NestJS
 - **Language**: TypeScript
-- **Database**: MySQL 8.0
+- **Database**: PostgreSQL 15
 - **ORM**: TypeORM
 - **Authentication**: JWT with Passport
 - **Validation**: class-validator & class-transformer
@@ -30,7 +30,7 @@ A robust, production-ready NestJS backend application for logistic management wi
 - Node.js (v18 or higher)
 - npm or yarn
 - Docker & Docker Compose (for containerized setup)
-- MySQL (for local development)
+- PostgreSQL (for local development)
 
 ## 🚀 Quick Start
 
@@ -76,9 +76,9 @@ A robust, production-ready NestJS backend application for logistic management wi
    # Configure your database and other settings
    ```
 
-3. **Start MySQL** (if not using Docker):
+3. **Start PostgreSQL** (if not using Docker):
    ```bash
-   # Make sure MySQL is running on port 3306
+   # Make sure PostgreSQL is running on port 5432
    ```
 
 4. **Run migrations**:
@@ -241,7 +241,7 @@ src/
 
 The application includes a complete Docker setup:
 
-- **MySQL**: Database server
+- **PostgreSQL**: Database server
 - **Redis**: Caching and session storage
 - **Nginx**: Reverse proxy with rate limiting
 - **App**: NestJS application
@@ -274,8 +274,8 @@ docker-compose exec app sh
 | `NODE_ENV` | Environment | development |
 | `PORT` | Application port | 3000 |
 | `DB_HOST` | Database host | localhost |
-| `DB_PORT` | Database port | 3306 |
-| `DB_USERNAME` | Database username | root |
+| `DB_PORT` | Database port | 5432 |
+| `DB_USERNAME` | Database username | postgres |
 | `DB_PASSWORD` | Database password | password |
 | `DB_DATABASE` | Database name | logistic_db |
 | `JWT_SECRET` | JWT secret key | (required) |
